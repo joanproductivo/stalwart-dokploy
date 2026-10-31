@@ -14,7 +14,9 @@ Skill para que un agente como Claude Code instale el servidor de correo [Stalwar
 
 ## Instalación
 
-En Claude Code, clona el repositorio en tu carpeta de skills:
+**Con el paquete:** descarga [`stalwart-dokploy.skill`](https://github.com/joanproductivo/stalwart-dokploy/releases/latest/download/stalwart-dokploy.skill), la última versión publicada, y añádelo en una aplicación que admita paquetes de skills.
+
+**Con Claude Code:** clona el repositorio en tu carpeta de skills:
 
 ```bash
 git clone https://github.com/joanproductivo/stalwart-dokploy.git ~/.claude/skills/stalwart-dokploy
@@ -44,3 +46,7 @@ Quien instala introduce sus propias credenciales. La skill indica no pedirlas po
 ## Limitaciones
 
 Stalwart cambia rápido: la skill se escribió para la v1. La guía de migración sale de un caso real con un solo buzón migrado y no se ha seguido de principio a fin en una instalación nueva. Prueba a restaurar una copia antes de confiarle correo importante.
+
+## Licencia
+
+[MIT](LICENSE). Esta licencia cubre la skill, no Stalwart, que tiene la suya.
