@@ -1,0 +1,49 @@
+# Plantilla de Stalwart para Dokploy. Sustituye antes de usar:
+#   __VERSION__      versión exacta, p. ej. v1.0.1 (compruébala, no la adivines)
+#   __MAIL_HOST__    hostname del servidor de correo, p. ej. mail.example.com
+#   __TUNNEL_PORT__  puerto local libre para el túnel SSH, p. ej. 18080
+services:
+  stalwart:
+    image: stalwartlabs/stalwart:__VERSION__-alpine
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    # El binario lleva esta capacidad en el archivo: sin ella no arranca.
+    cap_add:
+      - NET_BIND_SERVICE
+    security_opt:
+      - no-new-privileges:true
+    # Punto de partida. Ajústalo tras medir el consumo real con correo.
+    mem_limit: 768m
+    memswap_limit: 768m
+    pids_limit: 512
+    environment:
+      STALWART_PUBLIC_URL: https://__MAIL_HOST__
+    # Entorno de Dokploy. Solo se usa para el modo de recuperación.
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - "25:25"
+      - "465:465"
+      - "993:993"
+      # Si otro servidor ocupa estos puertos, quita las tres líneas anteriores hasta el corte.
+      # TEMPORAL: asistente y recuperación por túnel SSH. Borrar en la fase 5.
+      - "127.0.0.1:__TUNNEL_PORT__:8080"
+    volumes:
+      - stalwart-etc:/etc/stalwart
+      - stalwart-data:/var/lib/stalwart
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  stalwart-etc:
+  stalwart-data:
